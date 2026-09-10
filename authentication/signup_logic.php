@@ -81,6 +81,8 @@
             mysqli_stmt_bind_param($insert, "sssssss", $uuid, $first_name, $last_name, $encrypted_email, $hashed_email, $hashed_password, $image_name);
             mysqli_stmt_execute($insert);
             if (mysqli_stmt_affected_rows($insert) > 0) {
+                // move file to folder
+                move_uploaded_file($image_tmp_name, $image_destination_path);
                 // redirect to signin page with success message
                 $_SESSION['signup'] = "Registration successful, login!!";
                 header("location: " . site_url ."authentication/signin.php");

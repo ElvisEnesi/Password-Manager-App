@@ -1,7 +1,4 @@
 <?php
-    // error reporting
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
     // include file
     include_once ("../configuration/database.php");
     include_once ("../encryption/encryption.php");
@@ -12,6 +9,8 @@
         // validate inputs
         if (!$otp) {
             $_SESSION['signin'] = "Fill all fields!!";
+        }elseif (!is_numeric($otp)) {
+            $_SESSION['signin'] = "Invalid OTP format!!";
         } else {
             // get user details
             $user_uuid = $_SESSION['uuid'];

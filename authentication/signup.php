@@ -26,6 +26,7 @@
             <input type="password" name="co_p" placeholder="Confirm password">
             <button type="submit" name="submit">Create account</button>
         </form>
+        <p style="margin-top: 10px;">Already have an account? <a href="<?= site_url ?>authentication/signin.php">Sign in</a></p>
     </div>
 </body>
 </html>

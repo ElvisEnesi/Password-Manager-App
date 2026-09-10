@@ -1,9 +1,10 @@
 <?php
     // include file
     include_once ("../configuration/database.php");
+    include_once ("../encryption/encryption.php");
     // select user's passwords
-    $select = mysqli_prepare($connection, "SELECT * FROM password WHERE user_id = ?");
-    mysqli_stmt_bind_param($select, "i", $_SESSION['user_id']);
+    $select = mysqli_prepare($connection, "SELECT * FROM password WHERE user_uuid = ?");
+    mysqli_stmt_bind_param($select, "s", $_SESSION['uuid']);
     mysqli_stmt_execute($select);
     $results = mysqli_stmt_get_result($select);
 ?>
@@ -13,37 +14,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PassLock | Manage passwords</title>
-    <link rel="stylesheet" href="<?= site_url ?>./css/style.css">
+    <link rel="stylesheet" href="<?= site_url ?>css/style.css">
 </head>
 <body>
-    <?php if (isset($_SESSION['add_record'])) : ?>
-        <div class="notice"><?php echo $_SESSION['add_record'] ?></div>
-    <?php endif; ?>
-    <?php unset($_SESSION['add_record']) ?>
     <div class="container">
         <aside>
             <div class="logo">PassLock</div>
-            <a href="index.php">Overview</a>
-            <a href="add_record.php">Add password</a>
-            <a href="manage_record.php">Manage password</a>
-            <a href="signout.php">Log out</a>
+            <a href="<?= site_url ?>admin/index.php">Overview</a>
+            <a href="<?= site_url ?>admin/add_record.php">Add password</a>
+            <a href="<?= site_url ?>admin/manage_record.php">Manage password</a>
+            <a href="<?= site_url ?>admin/manage_user.php">Manage users</a>
+            <a href="<?= site_url ?>authentication/signout.php">Log out</a>
         </aside>
         <main>
             <div class="head">Secure credential vault</div>
             <h2>Your passwords</h2>
             <table>
                 <tr>
-                    <th>s/n</th>
                     <th>Name</th>
                     <th>Password</th>
                     <th>Date</th>
+                    <th>edit</th>
+                    <th>delete</th>
                 </tr>
                 <?php while ($result = mysqli_fetch_assoc($results)) : ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($result['id']) ?></td>
-                    <td><?php echo htmlspecialchars($result['app']) ?></td>
-                    <td><?php echo htmlspecialchars($result['password']) ?></td>
-                    <td><?php echo htmlspecialchars($result['date']) ?></td>
+                    <td><?php echo htmlspecialchars($result['app'], ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?php echo htmlspecialchars(decrypt($result['password']), ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?php echo htmlspecialchars($result['date'], ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><a href="<?= site_url ?>admin/edit_record.php?uuid=<?= htmlspecialchars($result['password_uuid'], ENT_QUOTES, 'UTF-8') ?>">click</a></td>
+                    <td><a style="color: var(--danger);" href="<?= site_url ?>admin/delete_record.php?uuid=<?= htmlspecialchars($result['password_uuid'], ENT_QUOTES, 'UTF-8') ?>">click</a></td>
                 </tr>
                 <?php endwhile; ?>
             </table>

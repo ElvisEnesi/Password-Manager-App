@@ -1,6 +1,12 @@
 <?php
     // include file
     include_once ("../configuration/database.php");
+    // get uuid from url
+    if (isset($_GET['uuid'])) {
+        $gotten_uuid = filter_var($_GET['uuid'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    } else {
+        # code...
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +22,7 @@
             <div class="notice"><?php echo htmlspecialchars($_SESSION['add_record'], ENT_QUOTES, 'UTF-8') ?></div>
         <?php endif; ?>
         <?php unset($_SESSION['add_record']) ?>
-        <form action="<?= site_url ?>admin/add_record_logic.php" method="post">
+        <form action="add_record_logic.php" method="post">
             <h3>Add password</h3>
             <input type="text" name="social" placeholder="App or website">
             <input type="password" name="cr_p" placeholder="Create password">

@@ -20,7 +20,7 @@
             <div class="notice"><?php echo $_SESSION['signin'] ?></div>
         <?php endif; ?>
         <?php unset($_SESSION['signin']) ?>
-        <form action="<?= site_url ?>/authentication/validate_otp.php" method="post">
+        <form action="<?= site_url ?>authentication/validate_login_otp.php" method="post">
             <h3>Insert OTP</h3>
             <input type="number" name="otp" placeholder="OTP">
             <button type="submit" name="submit">Sign in</button>

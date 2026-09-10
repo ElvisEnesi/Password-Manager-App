@@ -1,14 +1,12 @@
 <?php
-    // show errors
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
     // include file
     include_once ("../configuration/database.php");
+    include_once ("../encryption/encryption.php");
     // select user's passwords
-    // $select = mysqli_prepare($connection, "SELECT * FROM password WHERE user_id = ? ORDER BY date DESC LIMIT 2");
-    // mysqli_stmt_bind_param($select, "i", $_SESSION['user_id']);
-    // mysqli_stmt_execute($select);
-    // $results = mysqli_stmt_get_result($select);
+    $select = mysqli_prepare($connection, "SELECT * FROM password WHERE user_uuid = ? ORDER BY date DESC LIMIT 10");
+    mysqli_stmt_bind_param($select, "s", $_SESSION['uuid']);
+    mysqli_stmt_execute($select);
+    $results = mysqli_stmt_get_result($select);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,16 +17,21 @@
     <link rel="stylesheet" href="<?= site_url ?>css/style.css">
 </head>
 <body>
+    <?php if (isset($_SESSION['add_record'])) : ?>
+        <div class="notice"><?php echo htmlspecialchars($_SESSION['add_record'], ENT_QUOTES, 'UTF-8') ?></div>
+    <?php endif; ?>
+    <?php unset($_SESSION['add_record']) ?>
     <div class="container">
         <aside>
             <div class="logo">PassLock</div>
             <a href="<?= site_url ?>admin/index.php">Overview</a>
             <a href="<?= site_url ?>admin/add_record.php">Add password</a>
             <a href="<?= site_url ?>admin/manage_record.php">Manage password</a>
+            <a href="<?= site_url ?>admin/manage_user.php">Manage users</a>
             <a href="<?= site_url ?>authentication/signout.php">Log out</a>
         </aside>
         <main>
-            <div class="head">Welcome Uche</div>
+            <div class="head"><?= htmlspecialchars($_SESSION['full_name'], ENT_QUOTES, 'UTF-8') ?></div>
             <h2>Your passwords</h2>
             <table>
                 <tr>
@@ -36,13 +39,13 @@
                     <th>Password</th>
                     <th>Date</th>
                 </tr>
-                <?php //while ($result = mysqli_fetch_assoc($results)) : ?>
-                <!-- <tr>
-                    <td><?php //echo htmlspecialchars($result['app']) ?></td>
-                    <td><?php //echo htmlspecialchars($result['password']) ?></td>
-                    <td><?php //echo htmlspecialchars($result['date']) ?></td>
-                </tr> -->
-                <?php //endwhile; ?>
+                <?php while ($result = mysqli_fetch_assoc($results)) : ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($result['app'], ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?php echo htmlspecialchars(decrypt($result['password']), ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?php echo htmlspecialchars($result['date'], ENT_QUOTES, 'UTF-8') ?></td>
+                </tr>
+                <?php endwhile; ?>
             </table>
         </main>
     </div>

@@ -1,7 +1,4 @@
 <?php
-    // error reporting
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
     // include files
     require_once __DIR__ . '/../configuration/database.php';
     require_once __DIR__ . '/../encryption/encryption.php';
@@ -13,9 +10,6 @@
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
 
-    // require 'PHPMailer/src/PHPMailer.php';
-    // require 'PHPMailer/src/SMTP.php';
-    // require 'PHPMailer/src/Exception.php';
     // get user details
     $user_uuid = $_SESSION['uuid'];
     // create a random encrypted OTP
@@ -79,5 +73,3 @@
     } catch (Exception $e) {
         echo "Error: {$mail->ErrorInfo}";
     }
-// var_dump($row['email']);
-// var_dump($user_email);

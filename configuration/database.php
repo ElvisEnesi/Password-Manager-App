@@ -5,6 +5,9 @@
         // start session
         session_start();
     }
+    // show errors
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
     // declare constant url for site
     define("site_url", "http://localhost:3000/");
     // set default timezone

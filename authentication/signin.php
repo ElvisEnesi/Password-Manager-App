@@ -26,6 +26,7 @@
             <input type="password" name="key" id="" placeholder="Password">
             <button type="submit" name="submit">Sign in</button>
         </form>
+        <p style="margin-top: 10px;">Don't have an account? <a href="<?= site_url ?>authentication/signup.php">Sign up</a></p>
     </div>
 </body>
 </html>

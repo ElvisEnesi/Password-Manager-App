@@ -14,7 +14,8 @@
             $_SESSION['signin'] = "Fill all fields!!";
         } else {
             // check if staff id exists
-            $check = mysqli_prepare($connection, "SELECT uuid, hashed_email, password, is_admin FROM user WHERE hashed_email = ? LIMIT 1");
+            $check = mysqli_prepare($connection, "SELECT uuid, first_name, last_name, hashed_email, password, is_admin 
+            FROM user WHERE hashed_email = ? LIMIT 1");
             // decrypt email before checking
             $email = hash("sha256", $email);
             mysqli_stmt_bind_param($check, "s", $email);
@@ -28,6 +29,7 @@
                 if (password_verify($key, $data_key)) {
                     // set session to control login access
                     $_SESSION['uuid'] = $checked_result['uuid'];
+                    $_SESSION['full_name'] = $checked_result['first_name'] . " " . $checked_result['last_name'];
                     if ($checked_result['is_admin'] == 1) {
                         $_SESSION['user_is_admin'] = true;
                     } else {
@@ -36,7 +38,7 @@
                     // include otp page
                     include_once ("../smtp/mail.php");
                     // redirect to index page
-                    header("location: " . site_url . "authentication/otp.php");
+                    header("location: " . site_url . "authentication/login_otp.php");
                     exit();
                 } else {
                     $_SESSION['signin'] = "Incorrect password!!";

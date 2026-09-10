@@ -22,3 +22,4 @@
         $encrypted_data = substr($data, $iv_length);
         return openssl_decrypt($encrypted_data, $method, $my_key, 0, $iv);
     }
+    

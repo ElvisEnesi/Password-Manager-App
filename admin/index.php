@@ -4,8 +4,11 @@
     include_once ("../encryption/encryption.php");
     // select user's passwords
     $select = mysqli_prepare($connection, "SELECT * FROM password WHERE user_uuid = ? ORDER BY date DESC LIMIT 10");
+    // bind parameters
     mysqli_stmt_bind_param($select, "s", $_SESSION['uuid']);
+    // execute statement
     mysqli_stmt_execute($select);
+    // get results
     $results = mysqli_stmt_get_result($select);
 ?>
 <!DOCTYPE html>
@@ -17,6 +20,7 @@
     <link rel="stylesheet" href="<?= site_url ?>css/style.css">
 </head>
 <body>
+    <!--add message-->
     <?php if (isset($_SESSION['add_record'])) : ?>
         <div class="notice"><?php echo htmlspecialchars($_SESSION['add_record'], ENT_QUOTES, 'UTF-8') ?></div>
     <?php endif; ?>
@@ -36,12 +40,15 @@
             <table>
                 <tr>
                     <th>Name</th>
+                    <th>Username/Email</th>
                     <th>Password</th>
                     <th>Date</th>
                 </tr>
+                <!--convert data into associate array for usage-->
                 <?php while ($result = mysqli_fetch_assoc($results)) : ?>
                 <tr>
                     <td><?php echo htmlspecialchars($result['app'], ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?php echo htmlspecialchars($result['username'], ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?php echo htmlspecialchars(decrypt($result['password']), ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?php echo htmlspecialchars($result['date'], ENT_QUOTES, 'UTF-8') ?></td>
                 </tr>

@@ -1,6 +1,13 @@
 <?php
     // include file
     include_once ("../configuration/database.php");
+    // get uuid from url
+    if (isset($_GET['uuid'])) {
+        $gotten_uuid = (string) $_GET['uuid'];
+    } else {
+        header("location: " . site_url . "admin/manage_record.phh");
+        exit();
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,14 +19,10 @@
 </head>
 <body>
     <div class="form_container">
-        <?php if (isset($_SESSION['signin'])) : ?>
-            <div class="notice"><?php echo htmlspecialchars($_SESSION['signin'], ENT_QUOTES, 'UTF-8') ?></div>
-        <?php endif; ?>
-        <?php unset($_SESSION['signin']) ?>
-        <form action="<?= site_url ?>authentication/validate_add_otp.php" method="post">
+        <form action="<?= site_url ?>authentication/validate_delete_otp.php?uuid=<?= htmlspecialchars($gotten_uuid, ENT_QUOTES, "UTF-8") ?>" method="post">
             <h3>Insert OTP</h3>
             <input type="number" name="otp" placeholder="OTP">
-            <button type="submit" name="submit">Sign in</button>
+            <button type="submit" name="validate_delete">Proceed</button>
         </form>
     </div>
 </body>

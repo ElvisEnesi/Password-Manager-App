@@ -12,6 +12,7 @@
 </head>
 <body>
     <div class="form_container">
+        <!--add message-->
         <?php if (isset($_SESSION['add_record'])) : ?>
             <div class="notice"><?php echo htmlspecialchars($_SESSION['add_record'], ENT_QUOTES, 'UTF-8') ?></div>
         <?php endif; ?>
@@ -19,9 +20,10 @@
         <form action="<?= site_url ?>admin/add_record_logic.php" method="post">
             <h3>Add password</h3>
             <input type="text" name="social" placeholder="App or website">
+            <input type="text" name="username" placeholder="Username or Email">
             <input type="password" name="cr_p" placeholder="Create password">
             <input type="password" name="co_p" placeholder="Confirm password">
-            <button type="submit" name="submit">Save password</button>
+            <button type="submit" name="add_password">Save password</button>
         </form>
     </div>
 </body>

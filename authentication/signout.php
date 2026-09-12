@@ -4,6 +4,7 @@
     // unset & destroy session
     session_unset();
     session_destroy();
+    // redirect to sign in page
     header("location: " . site_url . "authentication/signin.php");
     exit();
 ?>

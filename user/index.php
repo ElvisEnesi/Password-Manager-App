@@ -4,8 +4,11 @@
     include_once ("../encryption/encryption.php");
     // select user's passwords
     $select = mysqli_prepare($connection, "SELECT * FROM password WHERE user_uuid = ? ORDER BY date DESC LIMIT 10");
+    // bind parameters
     mysqli_stmt_bind_param($select, "s", $_SESSION['uuid']);
+    // execute statement
     mysqli_stmt_execute($select);
+    // get results
     $results = mysqli_stmt_get_result($select);
 ?>
 <!DOCTYPE html>
@@ -30,17 +33,20 @@
             <a href="<?= site_url ?>authentication/signout.php">Log out</a>
         </aside>
         <main>
-            <div class="head">Welcome Uche</div>
+            <div class="head"><?= htmlspecialchars($_SESSION['full_name'], ENT_QUOTES, 'UTF-8') ?></div>
             <h2>Your passwords</h2>
             <table>
                 <tr>
                     <th>Name</th>
+                    <th>Username/Email</th>
                     <th>Password</th>
                     <th>Date</th>
                 </tr>
+                <!--convert record to associate array for use-->
                 <?php while ($result = mysqli_fetch_assoc($results)) : ?>
                 <tr>
                     <td><?php echo htmlspecialchars($result['app'], ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?php echo htmlspecialchars($result['username'], ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?php echo htmlspecialchars(decrypt($result['password']), ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?php echo htmlspecialchars($result['date'], ENT_QUOTES, 'UTF-8') ?></td>
                 </tr>

@@ -2,10 +2,13 @@
     // include file
     include_once ("../configuration/database.php");
     include_once ("../encryption/encryption.php");
-    // select user's passwords
+    // select user's except logged in user
     $select = mysqli_prepare($connection, "SELECT * FROM user WHERE NOT uuid = ?");
+    // bind parameter
     mysqli_stmt_bind_param($select, "s", $_SESSION['uuid']);
+    // execute statement
     mysqli_stmt_execute($select);
+    // get results
     $results = mysqli_stmt_get_result($select);
 ?>
 <!DOCTYPE html>
@@ -17,6 +20,7 @@
     <link rel="stylesheet" href="<?= site_url ?>css/style.css">
 </head>
 <body>
+    <!--future note-->
     <?php if (isset($_SESSION['add_record'])) : ?>
         <div class="notice"><?php echo htmlspecialchars($_SESSION['add_record'], ENT_QUOTES, 'UTF-8') ?></div>
     <?php endif; ?>
@@ -33,6 +37,7 @@
         <main>
             <div class="head"><?= htmlspecialchars($_SESSION['full_name'], ENT_QUOTES, 'UTF-8') ?></div>
             <h2>Users</h2>
+            <!--check for available users-->
             <?php if (mysqli_num_rows($results) > 0) : ?>
                 <table>
                     <tr>
@@ -44,6 +49,7 @@
                         <th>edit</th>
                         <th>delete</th>
                     </tr>
+                    <!--convert data to associate array for usage-->
                     <?php while ($result = mysqli_fetch_assoc($results)) : ?>
                     <tr>
                         <td><?php echo htmlspecialchars($result['first_name'], ENT_QUOTES, 'UTF-8') ?></td>

@@ -18,7 +18,9 @@
             FROM user WHERE hashed_email = ? LIMIT 1");
             // decrypt email before checking
             $email = hash("sha256", $email);
+            // bind parametes
             mysqli_stmt_bind_param($check, "s", $email);
+            // execute statement
             mysqli_stmt_execute($check);
             // get data as an associate array
             $checked_result = mysqli_fetch_assoc(mysqli_stmt_get_result($check));
@@ -51,7 +53,9 @@
             } else {
                 $_SESSION['signin'] = "User not found!!";
             }
+            // free results
             mysqli_stmt_free_result($check);
+            // close stmt
             mysqli_stmt_close($check);
         }
         // redirect if there's any error

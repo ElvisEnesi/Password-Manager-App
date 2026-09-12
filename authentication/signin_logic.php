@@ -35,11 +35,16 @@
                     } else {
                         $_SESSION['user_is_admin'] = false;
                     }
-                    // include otp page
-                    include_once ("../smtp/mail.php");
-                    // redirect to index page
-                    header("location: " . site_url . "authentication/login_otp.php");
-                    exit();
+                    if (isset($_SESSION['user_is_admin']) && $_SESSION['user_is_admin'] === true) {
+                        header("location: " . site_url . "admin/index.php");
+                        exit();
+                    } else if (isset($_SESSION['user_is_admin']) && $_SESSION['user_is_admin'] === false) {
+                        header("location: " . site_url . "user/index.php");
+                        exit();
+                    } else {
+                        // handle error if user role is not set
+                        die("User role not set.");
+                    }
                 } else {
                     $_SESSION['signin'] = "Incorrect password!!";
                 }

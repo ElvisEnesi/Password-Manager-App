@@ -48,7 +48,7 @@
                     <td><?php echo htmlspecialchars($result['app'], ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?php echo htmlspecialchars($result['username'], ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?php echo htmlspecialchars(decrypt($result['password']), ENT_QUOTES, 'UTF-8') ?></td>
-                    <td><?php echo htmlspecialchars($result['date'], ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?php echo date("M d, y", strtotime(htmlspecialchars($result['date'], ENT_QUOTES, 'UTF-8'))) ?></td>
                 </tr>
                 <?php endwhile; ?>
             </table>

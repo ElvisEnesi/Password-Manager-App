@@ -2,6 +2,7 @@
     // include file
     include_once ("../configuration/database.php");
     include_once ("../encryption/encryption.php");
+    include_once ("../security/logged_user.php");
     // select user's passwords
     $select = mysqli_prepare($connection, "SELECT * FROM password WHERE user_uuid = ? ORDER BY date DESC LIMIT 10");
     // bind parameters
@@ -32,6 +33,7 @@
             <a href="<?= site_url ?>admin/add_record.php">Add password</a>
             <a href="<?= site_url ?>admin/manage_record.php">Manage password</a>
             <a href="<?= site_url ?>admin/manage_user.php">Manage users</a>
+            <a href="<?= site_url ?>admin/activity.php">Activity</a>
             <a href="<?= site_url ?>authentication/signout.php">Log out</a>
         </aside>
         <main>
@@ -50,7 +52,7 @@
                     <td><?php echo htmlspecialchars($result['app'], ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?php echo htmlspecialchars($result['username'], ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?php echo htmlspecialchars(decrypt($result['password']), ENT_QUOTES, 'UTF-8') ?></td>
-                    <td><?php echo htmlspecialchars($result['date'], ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?php echo date("M d, y", strtotime(htmlspecialchars($result['date'], ENT_QUOTES, 'UTF-8'))) ?></td>
                 </tr>
                 <?php endwhile; ?>
             </table>

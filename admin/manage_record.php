@@ -37,6 +37,7 @@
             <a href="<?= site_url ?>admin/add_record.php">Add password</a>
             <a href="<?= site_url ?>admin/manage_record.php">Manage password</a>
             <a href="<?= site_url ?>admin/manage_user.php">Manage users</a>
+            <a href="<?= site_url ?>admin/activity.php">Activity</a>
             <a href="<?= site_url ?>authentication/signout.php">Log out</a>
         </aside>
         <main>
@@ -57,7 +58,7 @@
                     <td><?php echo htmlspecialchars($result['app'], ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?php echo htmlspecialchars($result['username'], ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?php echo htmlspecialchars(decrypt($result['password']), ENT_QUOTES, 'UTF-8') ?></td>
-                    <td><?php echo htmlspecialchars($result['date'], ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?php echo date("M d, y", strtotime(htmlspecialchars($result['date'], ENT_QUOTES, 'UTF-8'))) ?></td>
                     <td><a href="<?= site_url ?>admin/edit_record.php?uuid=<?= htmlspecialchars($result['password_uuid'], ENT_QUOTES, 'UTF-8') ?>">click</a></td>
                     <td><a style="color: var(--danger);" href="<?= site_url ?>admin/delete_record.php?uuid=<?= htmlspecialchars($result['password_uuid'], ENT_QUOTES, 'UTF-8') ?>">click</a></td>
                 </tr>

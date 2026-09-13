@@ -4,14 +4,39 @@
     ini_set('display_errors', 1);
     // include file
     include_once ("../configuration/database.php");
+    include_once("../security/ip.php");
     // check if submit button was clicked  
     if (isset($_POST['submit'])) {
+        // log login attempt before any validation
+        $login_attempt = mysqli_prepare($connection, "INSERT INTO login_log (ip_address, status) VALUES(?,?)");
+        // declare login status
+        $attempt_status = "attempt";
+        // bind parameters
+        mysqli_stmt_bind_param($login_attempt, "ss", $user_ip, $attempt_status);
+        // execute statement
+        mysqli_stmt_execute($login_attempt);
+        // free results
+        mysqli_stmt_free_result($login_attempt);
+        // close stmt
+        mysqli_stmt_close($login_attempt);
         // declare variables
         $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
         $key = filter_var($_POST['key'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         // validate inputs
         if (!$key || !$email) {
             $_SESSION['signin'] = "Fill all fields!!";
+            // log login failure after each attempt
+            $login_failure = mysqli_prepare($connection, "INSERT INTO login_log (ip_address, status) VALUES(?,?)");
+            // declare login status
+            $failure_status = "failed";
+            // bind parameters
+            mysqli_stmt_bind_param($login_failure, "ss", $user_ip, $failure_status);
+            // execute statement
+            mysqli_stmt_execute($login_failure);
+            // free results
+            mysqli_stmt_free_result($login_failure);
+            // close stmt
+            mysqli_stmt_close($login_failure);
         } else {
             // check if staff id exists
             $check = mysqli_prepare($connection, "SELECT uuid, first_name, last_name, hashed_email, password, is_admin 
@@ -38,9 +63,35 @@
                         $_SESSION['user_is_admin'] = false;
                     }
                     if (isset($_SESSION['user_is_admin']) && $_SESSION['user_is_admin'] === true) {
+                        // log login failure after each attempt
+                        $login_success = mysqli_prepare($connection, "INSERT INTO login_log (ip_address, status) VALUES(?,?)");
+                        // declare login status
+                        $success_status = "success";
+                        // bind parameters
+                        mysqli_stmt_bind_param($login_success, "ss", $user_ip, $success_status);
+                        // execute statement
+                        mysqli_stmt_execute($login_success);
+                        // free results
+                        mysqli_stmt_free_result($login_success);
+                        // close stmt
+                        mysqli_stmt_close($login_success);
+                        // redirect to admin page
                         header("location: " . site_url . "admin/index.php");
                         exit();
                     } else if (isset($_SESSION['user_is_admin']) && $_SESSION['user_is_admin'] === false) {
+                        // log login failure after each attempt
+                        $login_success = mysqli_prepare($connection, "INSERT INTO login_log (ip_address, status) VALUES(?,?)");
+                        // declare login status
+                        $success_status = "success";
+                        // bind parameters
+                        mysqli_stmt_bind_param($login_success, "ss", $user_ip, $success_status);
+                        // execute statement
+                        mysqli_stmt_execute($login_success);
+                        // free results
+                        mysqli_stmt_free_result($login_success);
+                        // close stmt
+                        mysqli_stmt_close($login_success);
+                        // redirect to user page
                         header("location: " . site_url . "user/index.php");
                         exit();
                     } else {
@@ -49,9 +100,33 @@
                     }
                 } else {
                     $_SESSION['signin'] = "Incorrect password!!";
+                    // log login failure after each attempt
+                    $login_failure = mysqli_prepare($connection, "INSERT INTO login_log (ip_address, status) VALUES(?,?)");
+                    // declare login status
+                    $failure_status = "failed";
+                    // bind parameters
+                    mysqli_stmt_bind_param($login_failure, "ss", $user_ip, $failure_status);
+                    // execute statement
+                    mysqli_stmt_execute($login_failure);
+                    // free results
+                    mysqli_stmt_free_result($login_failure);
+                    // close stmt
+                    mysqli_stmt_close($login_failure);
                 }
             } else {
                 $_SESSION['signin'] = "User not found!!";
+                // log login failure after each attempt
+                $login_failure = mysqli_prepare($connection, "INSERT INTO login_log (ip_address, status) VALUES(?,?)");
+                // declare login status
+                $failure_status = "failed";
+                // bind parameters
+                mysqli_stmt_bind_param($login_failure, "ss", $user_ip, $failure_status);
+                // execute statement
+                mysqli_stmt_execute($login_failure);
+                // free results
+                mysqli_stmt_free_result($login_failure);
+                // close stmt
+                mysqli_stmt_close($login_failure);
             }
             // free results
             mysqli_stmt_free_result($check);

@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PassLock | Create account</title>
-    <link rel="stylesheet" href="<?= site_url ?>./css/style.css">
+    <link rel="stylesheet" href="<?= site_url ?>css/style.css">
 </head>
 <body>
     <div class="form_container">
@@ -16,7 +16,7 @@
             <div class="notice"><?php echo $_SESSION['signup'] ?></div>
         <?php endif; ?>
         <?php unset($_SESSION['signup']) ?>
-        <form action="<?= site_url ?>./authentication/signup_logic.php" method="post" enctype="multipart/form-data">
+        <form action="<?= site_url ?>authentication/signup_logic.php" method="post" enctype="multipart/form-data">
             <h3>Create account</h3>
             <input type="text" name="first_name" placeholder="First name">
             <input type="text" name="last_name" placeholder="Last name">

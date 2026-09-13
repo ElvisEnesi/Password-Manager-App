@@ -32,6 +32,7 @@
             <a href="<?= site_url ?>admin/add_record.php">Add password</a>
             <a href="<?= site_url ?>admin/manage_record.php">Manage password</a>
             <a href="<?= site_url ?>admin/manage_user.php">Manage users</a>
+            <a href="<?= site_url ?>admin/activity.php">Activity</a>
             <a href="<?= site_url ?>authentication/signout.php">Log out</a>
         </aside>
         <main>
